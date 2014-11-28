@@ -10,6 +10,8 @@
 
 @interface ViewController : UIViewController
 
+@property (strong, nonatomic) UIColor *yellow;
+@property (strong, nonatomic) UIColor *red;
 
 @end
 

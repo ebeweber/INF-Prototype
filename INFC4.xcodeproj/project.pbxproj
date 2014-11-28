@@ -13,7 +13,6 @@
 		934DDE6D1A2936350089A389 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934DDE6C1A2936350089A389 /* Images.xcassets */; };
 		934DDE701A2936350089A389 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 934DDE6E1A2936350089A389 /* LaunchScreen.xib */; };
 		934DDE7C1A2936350089A389 /* INFC4Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 934DDE7B1A2936350089A389 /* INFC4Tests.m */; };
-		934DDE881A2937A30089A389 /* PlayerInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 934DDE871A2937A30089A389 /* PlayerInfoView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +38,6 @@
 		934DDE751A2936350089A389 /* INFC4Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = INFC4Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		934DDE7A1A2936350089A389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		934DDE7B1A2936350089A389 /* INFC4Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INFC4Tests.m; sourceTree = "<group>"; };
-		934DDE871A2937A30089A389 /* PlayerInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerInfoView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +83,6 @@
 				934DDE641A2936350089A389 /* AppDelegate.m */,
 				934DDE661A2936350089A389 /* ViewController.h */,
 				934DDE671A2936350089A389 /* ViewController.m */,
-				934DDE891A2937A80089A389 /* Views */,
 				934DDE6C1A2936350089A389 /* Images.xcassets */,
 				934DDE6E1A2936350089A389 /* LaunchScreen.xib */,
 				934DDE5F1A2936350089A389 /* Supporting Files */,
@@ -117,14 +114,6 @@
 				934DDE7A1A2936350089A389 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		934DDE891A2937A80089A389 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				934DDE871A2937A30089A389 /* PlayerInfoView.xib */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,7 +196,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				934DDE881A2937A30089A389 /* PlayerInfoView.xib in Resources */,
 				934DDE701A2936350089A389 /* LaunchScreen.xib in Resources */,
 				934DDE6D1A2936350089A389 /* Images.xcassets in Resources */,
 			);
