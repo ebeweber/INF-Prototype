@@ -61,34 +61,67 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     // x corresponds to the column, y corresponds to the row
     NSLog(@"Handling Tap: (%d, %d)", row, col);
     
-    int i;
-    for (i = 6; i >= 0; i--) {
-        if (board[i][col] != 1 && board[i][col] != 2) {
-            break;
+    
+    // Pop the column if correctly pressed
+    if ((row == 6) &&
+        ((board[row][col] == 1 && playerTurn == 1) || (board[row][col] == 2 && playerTurn == 2))) {
+        // Pop a piece
+        [self popBoardColumn:col];
+        [self changeTurns];
+        
+    } else {
+        // Just a regular drop
+        int i;
+        for (i = 6; i >= 0; i--) {
+            if (board[i][col] != 1 && board[i][col] != 2) {
+                break;
+            }
         }
+        
+        if (i != -1) {
+            row = i;
+            UIView *newCircle = [[UIView alloc]
+                                 initWithFrame:CGRectMake(self.stepSize * col + 1,
+                                                          self.stepSize * row + 1,
+                                                          self.stepSize - 2,
+                                                          self.stepSize - 2)];
+            newCircle.layer.cornerRadius = newCircle.frame.size.width / 2;
+            
+            if (playerTurn == 1) {
+                newCircle.backgroundColor = self.yellow;
+            } else {
+                newCircle.backgroundColor = self.red;
+            }
+            
+            board[row][col] = playerTurn;
+            boardViews[row][col] = newCircle;
+            [self.gameBoard addSubview:newCircle];
+            
+            [self changeTurns];
+
+        }
+    }
+}
+
+- (void)popBoardColumn:(int)column
+{
+    // Remove the view accordingly
+    board[6][column] = 0;
+    [boardViews[6][column] removeFromSuperview];
+    
+    // Now we must shift everything down.
+    for (int i = 6; i > 0; i--) {
+        board[i][column] = board[i-1][column];
+        boardViews[i][column] = boardViews[i-1][column];
+        
+        [boardViews[i][column] setFrame:CGRectMake(self.stepSize * column + 1,
+                                                   self.stepSize * i + 1,
+                                                   self.stepSize - 2,
+                                                   self.stepSize - 2)];
     }
     
-    if (i != -1) {
-        row = i;
-        UIView *newCircle = [[UIView alloc]
-                             initWithFrame:CGRectMake(self.stepSize * col + 1,
-                                                      self.stepSize * row + 1,
-                                                      self.stepSize - 2,
-                                                      self.stepSize - 2)];
-        newCircle.layer.cornerRadius = newCircle.frame.size.width / 2;
-        
-        if (playerTurn == 1) {
-            newCircle.backgroundColor = self.yellow;
-        } else {
-            newCircle.backgroundColor = self.red;
-        }
-        
-        board[row][col] = playerTurn;
-        boardViews[row][col] = newCircle;
-        [self.gameBoard addSubview:newCircle];
-        
-        [self changeTurns];
-    }
+    board[0][column] = 0;
+    boardViews[0][column] = nil;
 }
 
 //
