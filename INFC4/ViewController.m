@@ -21,6 +21,38 @@
     self.yellow = [UIColor colorWithRed:241/255.0 green:196/255.0 blue:15/255.0 alpha:1.0];
     self.red = [UIColor colorWithRed:231/255.0 green:76/255.0 blue:60/255.0 alpha:1.0];
     [self drawDummyPlayerInfo];
+    [self createGameBoard];
+}
+
+
+- (void)createGameBoard {
+    UIColor *boardColor = [UIColor colorWithRed:0/250.0
+                                         green:0/255.0
+                                          blue:0/255.0
+                                         alpha:1.0];
+    CGRect gameBoardRect = CGRectMake(5,
+                                      90,
+                                      self.view.frame.size.width - 10,
+                                      self.view.frame.size.width - 10);
+    UIView *gameBoard = [[UIView alloc] initWithFrame:gameBoardRect];
+    
+    // Draw the horizontal lines
+    float stepSize = gameBoardRect.size.width / 7;
+    for (int i = 0; i < 8; i++) {
+        // Add the vertical lines
+        UIView *vLine = [[UIView alloc] initWithFrame:CGRectMake(stepSize * i, 0, 1, gameBoardRect.size.width)];
+        vLine.backgroundColor = boardColor;
+        [gameBoard addSubview:vLine];
+        
+        // Add the horizontal lines
+        UIView *hLine = [[UIView alloc] initWithFrame:CGRectMake(0, stepSize * i, gameBoardRect.size.width, 1)];
+        hLine.backgroundColor = boardColor;
+        [gameBoard addSubview:hLine];
+        
+    }
+    
+    // Add the new gameboard to the game
+    [self.view addSubview:gameBoard];
 }
 
 //
