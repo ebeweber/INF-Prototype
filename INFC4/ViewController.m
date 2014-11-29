@@ -14,6 +14,11 @@
 
 @implementation ViewController
 
+int board[7][7];
+UIView *boardViews[7][7];
+bool gameOver = NO;
+int playerTurn = 1;  // 1 is yellow, 2 is red
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -32,19 +37,58 @@
     [self.gameBoard addGestureRecognizer:tapRecognizer];
 }
 
+- (void) changeTurns
+{
+    if (playerTurn == 1) {
+        playerTurn = 2;
+    } else if (playerTurn == 2) {
+        playerTurn = 1;
+    }
+}
+
 - (IBAction)gameBoardTapGestureRecognizer:(UITapGestureRecognizer *)recognizer {
     float stepSize = self.gameBoard.frame.size.width / 7;
     CGPoint tapPoint = [recognizer locationInView:self.gameBoard];
     
     // Get the appropraite square for that
-    int x = tapPoint.x / stepSize;
-    int y = tapPoint.y / stepSize;
+    int col = tapPoint.x / stepSize;
+    int row = tapPoint.y / stepSize;
 
-    [self handleTapWhereX:x Y:y];
+    [self handleTapWhereRow:row Col:col];
 }
 
-- (void) handleTapWhereX:(int)x Y:(int)y {
-    NSLog(@"Handling Tap: (%d, %d)", x, y);
+- (void) handleTapWhereRow:(int)row Col:(int)col {
+    // x corresponds to the column, y corresponds to the row
+    NSLog(@"Handling Tap: (%d, %d)", row, col);
+    
+    int i;
+    for (i = 6; i >= 0; i--) {
+        if (board[i][col] != 1 && board[i][col] != 2) {
+            break;
+        }
+    }
+    
+    if (i != -1) {
+        row = i;
+        UIView *newCircle = [[UIView alloc]
+                             initWithFrame:CGRectMake(self.stepSize * col + 1,
+                                                      self.stepSize * row + 1,
+                                                      self.stepSize - 2,
+                                                      self.stepSize - 2)];
+        newCircle.layer.cornerRadius = newCircle.frame.size.width / 2;
+        
+        if (playerTurn == 1) {
+            newCircle.backgroundColor = self.yellow;
+        } else {
+            newCircle.backgroundColor = self.red;
+        }
+        
+        board[row][col] = playerTurn;
+        boardViews[row][col] = newCircle;
+        [self.gameBoard addSubview:newCircle];
+        
+        [self changeTurns];
+    }
 }
 
 //
@@ -76,15 +120,8 @@
         
     }
     
-    self.boardState = @[@[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0],
-                        @[@0, @0, @0, @0, @0, @0, @0]];
-    self.playerTurn = 1;
-    self.gameOver = false;
+    // Store the step size
+    self.stepSize = self.gameBoard.frame.size.width / 7;
     
     // Add the new gameboard to the game
     [self.view addSubview:self.gameBoard];
