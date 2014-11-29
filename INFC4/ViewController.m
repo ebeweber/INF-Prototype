@@ -58,17 +58,18 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
 }
 
 - (void) handleTapWhereRow:(int)row Col:(int)col {
+    if (gameOver) { return; };
+    
     // x corresponds to the column, y corresponds to the row
     NSLog(@"Handling Tap: (%d, %d)", row, col);
-    
     
     // Pop the column if correctly pressed
     if ((row == 6) &&
         ((board[row][col] == 1 && playerTurn == 1) || (board[row][col] == 2 && playerTurn == 2))) {
         // Pop a piece
         [self popBoardColumn:col];
+        [self checkDifferentAnglesForFour:row :col];
         [self changeTurns];
-        
     } else {
         // Just a regular drop
         int i;
@@ -97,6 +98,7 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
             boardViews[row][col] = newCircle;
             [self.gameBoard addSubview:newCircle];
             
+            [self checkDifferentAnglesForFour:row :col];
             [self changeTurns];
 
         }
@@ -241,5 +243,127 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     [self.view addSubview:playerTwoView];
 }
 
+
+// Methods for checking for 4 in a row
+- (BOOL)checkDifferentAnglesForFour:(int)r :(int)c
+{
+    NSLog(@"looking for");
+    // First check for the current player
+    bool four = ([self fourInARowHorizontallyFrom:r :c :playerTurn] ||
+                     [self fourInARowVerticallyFrom:r :c :playerTurn] ||
+                     [self fourInARowDiagonallyUpFrom:r :c :playerTurn] ||
+                     [self fourInARowDiagonallyDownFrom:r :c :playerTurn]);
+    if (four) {
+        gameOver = YES;
+        NSLog(@"Detected 4 in a row");
+        return YES;
+    };
+            
+    int otherPlayer;
+    if (playerTurn == 1) { otherPlayer = 2; }
+    else if (playerTurn == 2) { otherPlayer = 1; };
+    
+    four = ([self fourInARowHorizontallyFrom:r :c :otherPlayer] ||
+            [self fourInARowVerticallyFrom:r :c :otherPlayer] ||
+            [self fourInARowDiagonallyUpFrom:r :c :otherPlayer] ||
+            [self fourInARowDiagonallyDownFrom:r :c :otherPlayer]);
+    
+    if (four) {
+        NSLog(@"Detected 4 in a row");
+        gameOver = YES;
+    };
+    return four;
+}
+
+- (BOOL)fourInARowHorizontallyFrom:(int)r :(int)c :(int)player
+{
+    int value = board[r][c];
+    if (value != player) { return NO; };
+    
+    if (c + 3 >= 7) {
+        return NO;
+    }
+    for (int i = 1; i <= 3; i++) {
+        if (board[r][c + i] != value) {
+            return NO;
+        }
+    }
+    NSLog(@"4IAR - Horizontally");
+    
+    [self drawGameOverLine:r :c :r :c+3];
+    return YES;
+}
+
+- (BOOL)fourInARowVerticallyFrom:(int)r :(int)c :(int)player
+{
+    int value = board[r][c];
+    if (value != player) { return NO; };
+    
+    if (r + 3 >= 7) {
+        return NO;
+    }
+    for (int i = 1; i <= 3; i++) {
+        if (board[r + i][c] != value) {
+            return NO;
+        }
+    }
+    NSLog(@"4IAR - Vertically");
+    
+    [self drawGameOverLine:r :c :r+3 :c];
+    return YES;
+}
+
+- (BOOL)fourInARowDiagonallyDownFrom:(int)r :(int)c :(int)player
+{
+    int value = board[r][c];
+    if (value != player) { return NO; };
+    
+    if (r + 3 >= 7 || c + 3 >= 7) {
+        return NO;
+    }
+    for (int i = 1; i <= 3; i++) {
+        if (board[r+i][c+i] != value) {
+            return NO;
+        }
+    }
+    NSLog(@"4IAR - Diagonally Down");
+    
+    [self drawGameOverLine:r :c :r+3 :c+3];
+    return YES;
+}
+
+- (BOOL)fourInARowDiagonallyUpFrom:(int)r :(int)c :(int)player
+{
+    int value = board[r][c];
+    if (value != player) { return NO; };
+    
+    if (c - 3 < 0 || r + 3 >= 7) {
+        return NO;
+    }
+    for (int i = 1; i <= 3; i++) {
+        if (board[r+i][c-i] != value) {
+            return NO;
+        }
+    }
+    NSLog(@"4IAR - Diagonally Up");
+    
+    [self drawGameOverLine:r :c :r+3 :c-3];
+    return YES;
+}
+
+- (void)drawGameOverLine:(int)r1 :(int)c1 :(int)r2 :(int)c2
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    int boardWidth = self.gameBoard.frame.size.height / 7;
+    
+    // Draw the line from the middle of the squares to the other
+    [path moveToPoint:CGPointMake((c1 + .5) * boardWidth, (r1 + .5) * boardWidth)];
+    [path addLineToPoint:CGPointMake((c2 + .5) * boardWidth, (r2 + .5) * boardWidth)];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = [path CGPath];
+    shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
+    shapeLayer.lineWidth = 1.0;
+    [self.gameBoard.layer addSublayer:shapeLayer];
+}
 
 @end
