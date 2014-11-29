@@ -13,6 +13,10 @@
 @property (strong, nonatomic) UIColor *yellow;
 @property (strong, nonatomic) UIColor *red;
 @property (strong, nonatomic) UIView *gameBoard;
+@property (strong, nonatomic) NSArray* boardState;
+
+@property int playerTurn;
+@property BOOL gameOver;
 
 @end
 

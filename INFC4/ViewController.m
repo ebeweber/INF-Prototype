@@ -76,6 +76,16 @@
         
     }
     
+    self.boardState = @[@[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0],
+                        @[@0, @0, @0, @0, @0, @0, @0]];
+    self.playerTurn = 1;
+    self.gameOver = false;
+    
     // Add the new gameboard to the game
     [self.view addSubview:self.gameBoard];
 }
