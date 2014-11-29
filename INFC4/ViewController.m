@@ -243,6 +243,10 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     [self.view addSubview:playerTwoView];
 }
 
+- (void) endGame {
+    gameOver = YES;
+    self.title = @"Game Over";
+}
 
 // Methods for checking for 4 in a row
 - (BOOL)checkDifferentAnglesForFour:(int)r :(int)c
@@ -254,8 +258,8 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
                      [self fourInARowDiagonallyUpFrom:r :c :playerTurn] ||
                      [self fourInARowDiagonallyDownFrom:r :c :playerTurn]);
     if (four) {
-        gameOver = YES;
         NSLog(@"Detected 4 in a row");
+        [self endGame];
         return YES;
     };
             
@@ -270,7 +274,7 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     
     if (four) {
         NSLog(@"Detected 4 in a row");
-        gameOver = YES;
+        [self endGame];
     };
     return four;
 }
