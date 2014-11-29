@@ -22,9 +22,34 @@
     self.red = [UIColor colorWithRed:231/255.0 green:76/255.0 blue:60/255.0 alpha:1.0];
     [self drawDummyPlayerInfo];
     [self createGameBoard];
+    
+    // Create and initialize a tap gesture
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                             initWithTarget:self action:@selector(gameBoardTapGestureRecognizer:)];
+    // Specify that the gesture must be a single tap
+    tapRecognizer.numberOfTapsRequired = 1;
+    // Add the tap gesture recognizer to the view
+    [self.gameBoard addGestureRecognizer:tapRecognizer];
 }
 
+- (IBAction)gameBoardTapGestureRecognizer:(UITapGestureRecognizer *)recognizer {
+    float stepSize = self.gameBoard.frame.size.width / 7;
+    CGPoint tapPoint = [recognizer locationInView:self.gameBoard];
+    
+    // Get the appropraite square for that
+    int x = tapPoint.x / stepSize;
+    int y = tapPoint.y / stepSize;
 
+    [self handleTapWhereX:x Y:y];
+}
+
+- (void) handleTapWhereX:(int)x Y:(int)y {
+    NSLog(@"Handling Tap: (%d, %d)", x, y);
+}
+
+//
+// Game Board Creation
+//
 - (void)createGameBoard {
     UIColor *boardColor = [UIColor colorWithRed:0/250.0
                                          green:0/255.0
@@ -34,7 +59,7 @@
                                       90,
                                       self.view.frame.size.width - 10,
                                       self.view.frame.size.width - 10);
-    UIView *gameBoard = [[UIView alloc] initWithFrame:gameBoardRect];
+    self.gameBoard = [[UIView alloc] initWithFrame:gameBoardRect];
     
     // Draw the horizontal lines
     float stepSize = gameBoardRect.size.width / 7;
@@ -42,17 +67,17 @@
         // Add the vertical lines
         UIView *vLine = [[UIView alloc] initWithFrame:CGRectMake(stepSize * i, 0, 1, gameBoardRect.size.width)];
         vLine.backgroundColor = boardColor;
-        [gameBoard addSubview:vLine];
+        [self.gameBoard addSubview:vLine];
         
         // Add the horizontal lines
         UIView *hLine = [[UIView alloc] initWithFrame:CGRectMake(0, stepSize * i, gameBoardRect.size.width, 1)];
         hLine.backgroundColor = boardColor;
-        [gameBoard addSubview:hLine];
+        [self.gameBoard addSubview:hLine];
         
     }
     
     // Add the new gameboard to the game
-    [self.view addSubview:gameBoard];
+    [self.view addSubview:self.gameBoard];
 }
 
 //
