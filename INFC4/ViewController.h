@@ -10,9 +10,10 @@
 
 @interface ViewController : UIViewController
 
+@property float stepSize;
 @property (strong, nonatomic) UIColor *yellow;
 @property (strong, nonatomic) UIColor *red;
 @property (strong, nonatomic) UIView *gameBoard;
-@property float stepSize;
+
 @end
 

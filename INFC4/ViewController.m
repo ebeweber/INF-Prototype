@@ -14,10 +14,15 @@
 
 @implementation ViewController
 
+
 int board[7][7];
 UIView *boardViews[7][7];
-bool gameOver = NO;
+bool gameOver = YES;
 int playerTurn = 1;  // 1 is yellow, 2 is red
+UIButton *newGameButton;
+CAShapeLayer *shapeLayer;
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,14 +40,45 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     tapRecognizer.numberOfTapsRequired = 1;
     // Add the tap gesture recognizer to the view
     [self.gameBoard addGestureRecognizer:tapRecognizer];
+    
+    newGameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [newGameButton setTitle:@"Start New Game" forState:UIControlStateNormal];
+    
+    newGameButton.frame = CGRectMake(80.0, 210.0, 160.0, 60.0);
+    newGameButton.layer.cornerRadius = 15;
+    [newGameButton addTarget:self
+               action:@selector(startGame:)
+     forControlEvents:UIControlEventTouchUpInside];
+    newGameButton.backgroundColor = [UIColor colorWithRed:236/255.0
+                                                    green:240/255.0
+                                                     blue:241/255.0
+                                                    alpha:.9];
+    [self.view addSubview:newGameButton];
+    
+}
+
+- (void) startGame:(UIButton *)button {
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            board[i][j] = 0;
+            [boardViews[i][j] removeFromSuperview];
+        }
+    }
+    gameOver = NO;
+    playerTurn = 1;
+    newGameButton.hidden = YES;
+    [shapeLayer removeFromSuperlayer];
 }
 
 - (void) changeTurns
 {
     if (playerTurn == 1) {
         playerTurn = 2;
+        self.title = @"Player Two's Move";
     } else if (playerTurn == 2) {
         playerTurn = 1;
+        self.title = @"Player One's Move";
+        
     }
 }
 
@@ -246,6 +282,7 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
 - (void) endGame {
     gameOver = YES;
     self.title = @"Game Over";
+    newGameButton.hidden = NO;
 }
 
 // Methods for checking for 4 in a row
@@ -259,6 +296,8 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
                      [self fourInARowDiagonallyDownFrom:r :c :playerTurn]);
     if (four) {
         NSLog(@"Detected 4 in a row");
+        
+        if (playerTurn == 1) { self.title = @"Player One Wins!"; };
         [self endGame];
         return YES;
     };
@@ -273,6 +312,7 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
             [self fourInARowDiagonallyDownFrom:r :c :otherPlayer]);
     
     if (four) {
+        if (playerTurn == 2) { self.title = @"Player Two Wins!"; };
         NSLog(@"Detected 4 in a row");
         [self endGame];
     };
@@ -363,7 +403,7 @@ int playerTurn = 1;  // 1 is yellow, 2 is red
     // Draw the line from the middle of the squares to the other
     [path moveToPoint:CGPointMake((c1 + .5) * boardWidth, (r1 + .5) * boardWidth)];
     [path addLineToPoint:CGPointMake((c2 + .5) * boardWidth, (r2 + .5) * boardWidth)];
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer = [CAShapeLayer layer];
     shapeLayer.path = [path CGPath];
     shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
     shapeLayer.lineWidth = 1.0;
