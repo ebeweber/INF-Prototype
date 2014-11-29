@@ -64,6 +64,7 @@ CAShapeLayer *shapeLayer;
             [boardViews[i][j] removeFromSuperview];
         }
     }
+    self.title = @"Player One's Turn";
     gameOver = NO;
     playerTurn = 1;
     newGameButton.hidden = YES;
@@ -105,7 +106,7 @@ CAShapeLayer *shapeLayer;
         ((board[row][col] == 1 && playerTurn == 1) || (board[row][col] == 2 && playerTurn == 2))) {
         // Pop a piece
         [self popBoardColumn:col];
-        [self checkDifferentAnglesForFour:row :col];
+        [self checkAllForFourInARow:row :col];
         
         if (!gameOver) {
             [self changeTurns];
@@ -138,7 +139,7 @@ CAShapeLayer *shapeLayer;
             boardViews[row][col] = newCircle;
             [self.gameBoard addSubview:newCircle];
             
-            [self checkDifferentAnglesForFour:row :col];
+            [self checkAllForFourInARow:row :col];
             if (!gameOver) {
                 [self changeTurns];
             }
@@ -291,14 +292,42 @@ CAShapeLayer *shapeLayer;
 }
 
 // Methods for checking for 4 in a row
-- (BOOL)checkDifferentAnglesForFour:(int)r :(int)c
+
+- (void) checkAllForFourInARow:(int)r :(int) c
+{
+    int currentPlayer = playerTurn;
+    
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            if ([self checkDifferentAnglesForFour:i :j :currentPlayer]) {
+                return;
+            }
+            
+        }
+    }
+    
+    if (currentPlayer == 1) {
+        currentPlayer = 2;
+    } else {
+        currentPlayer = 1;
+    }
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            if ([self checkDifferentAnglesForFour:i :j :currentPlayer]) {
+                return;
+            }
+            
+        }
+    }
+}
+- (BOOL)checkDifferentAnglesForFour:(int)r :(int)c :(int)player
 {
     NSLog(@"looking for");
     // First check for the current player
-    bool four = ([self fourInARowHorizontallyFrom:r :c :playerTurn] ||
-                     [self fourInARowVerticallyFrom:r :c :playerTurn] ||
-                     [self fourInARowDiagonallyUpFrom:r :c :playerTurn] ||
-                     [self fourInARowDiagonallyDownFrom:r :c :playerTurn]);
+    bool four = ([self fourInARowHorizontallyFrom:r :c :player] ||
+                     [self fourInARowVerticallyFrom:r :c :player] ||
+                     [self fourInARowDiagonallyUpFrom:r :c :player] ||
+                     [self fourInARowDiagonallyDownFrom:r :c :player]);
     if (four) {
         NSLog(@"Detected 4 in a row");
         
@@ -306,21 +335,7 @@ CAShapeLayer *shapeLayer;
         [self endGame];
         return YES;
     };
-            
-    int otherPlayer;
-    if (playerTurn == 1) { otherPlayer = 2; }
-    else if (playerTurn == 2) { otherPlayer = 1; };
-    
-    four = ([self fourInARowHorizontallyFrom:r :c :otherPlayer] ||
-            [self fourInARowVerticallyFrom:r :c :otherPlayer] ||
-            [self fourInARowDiagonallyUpFrom:r :c :otherPlayer] ||
-            [self fourInARowDiagonallyDownFrom:r :c :otherPlayer]);
-    
-    if (four) {
-        if (playerTurn == 2) { self.title = @"Player Two Wins!"; };
-        NSLog(@"Detected 4 in a row");
-        [self endGame];
-    };
+
     return four;
 }
 
