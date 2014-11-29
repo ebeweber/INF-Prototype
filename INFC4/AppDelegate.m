@@ -18,6 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //  Initialize our main view
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     ViewController *viewController = [[ViewController alloc] init];
     
     //  Add navigation controller to the application for the bar
@@ -26,7 +27,6 @@
                                                                   green:152/255.0
                                                                    blue:219/255.0
                                                                   alpha:1.0]];
-    
     self.window.rootViewController = navigationController;
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];

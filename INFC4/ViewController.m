@@ -75,10 +75,11 @@ CAShapeLayer *shapeLayer;
     if (playerTurn == 1) {
         playerTurn = 2;
         self.title = @"Player Two's Move";
+        [[UINavigationBar appearance] setBarTintColor:self.red];
     } else if (playerTurn == 2) {
         playerTurn = 1;
         self.title = @"Player One's Move";
-        
+        [[UINavigationBar appearance] setBarTintColor:self.yellow];
     }
 }
 
@@ -105,7 +106,10 @@ CAShapeLayer *shapeLayer;
         // Pop a piece
         [self popBoardColumn:col];
         [self checkDifferentAnglesForFour:row :col];
-        [self changeTurns];
+        
+        if (!gameOver) {
+            [self changeTurns];
+        }
     } else {
         // Just a regular drop
         int i;
@@ -135,7 +139,9 @@ CAShapeLayer *shapeLayer;
             [self.gameBoard addSubview:newCircle];
             
             [self checkDifferentAnglesForFour:row :col];
-            [self changeTurns];
+            if (!gameOver) {
+                [self changeTurns];
+            }
 
         }
     }
@@ -281,7 +287,6 @@ CAShapeLayer *shapeLayer;
 
 - (void) endGame {
     gameOver = YES;
-    self.title = @"Game Over";
     newGameButton.hidden = NO;
 }
 
