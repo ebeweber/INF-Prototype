@@ -55,6 +55,17 @@ CAShapeLayer *shapeLayer;
                                                     alpha:.6];
     [self.view addSubview:newGameButton];
     
+    UILabel *tapToPop = [[UILabel alloc] init];
+    tapToPop.text = @"Tap Bottom Piece to Pop";
+    [tapToPop sizeToFit];
+    
+    CGRect frame = tapToPop.frame;
+    frame.origin = CGPointMake(self.view.center.x - tapToPop.frame.size.width / 2,
+                                        self.gameBoard.frame.origin.y + self.gameBoard.frame.size.height + 10);
+    tapToPop.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:.5];
+    tapToPop.frame = frame;
+    [self.view addSubview:tapToPop];
+    
 }
 
 - (void) startGame:(UIButton *)button {
@@ -178,7 +189,7 @@ CAShapeLayer *shapeLayer;
                                           blue:255/255.0
                                          alpha:.5];
     CGRect gameBoardRect = CGRectMake(5,
-                                      90,
+                                      70,
                                       self.view.frame.size.width - 10,
                                       self.view.frame.size.width - 10);
     self.gameBoard = [[UIView alloc] initWithFrame:gameBoardRect];
@@ -333,9 +344,8 @@ CAShapeLayer *shapeLayer;
                      [self fourInARowDiagonallyUpFrom:r :c :player] ||
                      [self fourInARowDiagonallyDownFrom:r :c :player]);
     if (four) {
-        NSLog(@"Detected 4 in a row");
-        
-        if (playerTurn == 1) { self.title = @"Player One Wins!"; };
+        if (playerTurn == 1) { self.title = @"Player One Wins!"; }
+        else if (playerTurn == 2) { self.title = @"Player Two Wins!"; };
         [self endGame];
         return YES;
     };
