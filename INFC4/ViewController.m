@@ -9,6 +9,9 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+{
+    AVAudioPlayer *_audioPlayer;
+}
 
 @end
 
@@ -87,11 +90,13 @@ CAShapeLayer *shapeLayer;
     if (playerTurn == 1) {
         playerTurn = 2;
         self.title = @"Player Two's Move";
+        [self playDropSounds];
         [[UINavigationBar appearance] setBarTintColor:self.red];
     } else if (playerTurn == 2) {
         playerTurn = 1;
         self.title = @"Player One's Move";
         [[UINavigationBar appearance] setBarTintColor:self.yellow];
+        [self playDropSounds];
     }
 }
 
@@ -104,6 +109,19 @@ CAShapeLayer *shapeLayer;
     int row = tapPoint.y / stepSize;
 
     [self handleTapWhereRow:row Col:col];
+}
+
+- (void) playDropSounds
+{
+    NSLog(@"playing drop sounds");
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"droppiece" ofType:@"wav"];
+    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: path];
+    
+    AVAudioPlayer *theAudio=[[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:NULL];
+    theAudio.volume = 1.0;
+    theAudio.delegate = self;
+    theAudio.numberOfLoops = 1;
+    [theAudio play];
 }
 
 - (void) handleTapWhereRow:(int)row Col:(int)col {
@@ -135,7 +153,7 @@ CAShapeLayer *shapeLayer;
             row = i;
             UIView *newCircle = [[UIView alloc]
                                  initWithFrame:CGRectMake(self.stepSize * col + 1,
-                                                          self.stepSize * row + 1,
+                                                          0,
                                                           self.stepSize - 2,
                                                           self.stepSize - 2)];
             newCircle.layer.cornerRadius = newCircle.frame.size.width / 2;
@@ -145,6 +163,22 @@ CAShapeLayer *shapeLayer;
             } else {
                 newCircle.backgroundColor = self.red;
             }
+            
+            [UIView animateWithDuration:0.5
+                                  delay:0.1
+                                options: UIViewAnimationCurveEaseOut
+                             animations:^
+             {
+                 CGRect frame = newCircle.frame;
+                 frame.origin.y = self.stepSize * row + 1;
+                 frame.origin.x = self.stepSize * col + 1;
+                 newCircle.frame = frame;
+             }
+                             completion:^(BOOL finished)
+             {
+                 NSLog(@"Completed");
+                 
+             }];
             
             board[row][col] = playerTurn;
             boardViews[row][col] = newCircle;
