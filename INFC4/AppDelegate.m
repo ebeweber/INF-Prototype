@@ -28,7 +28,12 @@
                                                                    blue:219/255.0
                                                                   alpha:1.0]];
     self.window.rootViewController = navigationController;
-    [self.window setBackgroundColor:[UIColor whiteColor]];
+    [self.window setBackgroundColor:[UIColor colorWithRed:52/255.0
+                                                    green:152/255.0
+                                                     blue:219/255.0
+                                                    alpha:1.0]];
+    
+    navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
     [self.window makeKeyAndVisible];
     return YES;
 }

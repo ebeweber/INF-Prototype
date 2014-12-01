@@ -52,7 +52,7 @@ CAShapeLayer *shapeLayer;
     newGameButton.backgroundColor = [UIColor colorWithRed:236/255.0
                                                     green:240/255.0
                                                      blue:241/255.0
-                                                    alpha:.9];
+                                                    alpha:.6];
     [self.view addSubview:newGameButton];
     
 }
@@ -173,10 +173,10 @@ CAShapeLayer *shapeLayer;
 // Game Board Creation
 //
 - (void)createGameBoard {
-    UIColor *boardColor = [UIColor colorWithRed:0/250.0
-                                         green:0/255.0
-                                          blue:0/255.0
-                                         alpha:1.0];
+    UIColor *boardColor = [UIColor colorWithRed:255/250.0
+                                         green:255/255.0
+                                          blue:255/255.0
+                                         alpha:.5];
     CGRect gameBoardRect = CGRectMake(5,
                                       90,
                                       self.view.frame.size.width - 10,
@@ -227,6 +227,7 @@ CAShapeLayer *shapeLayer;
     UILabel *playerOneLabel = [[UILabel alloc] init];
     playerOneLabel.text = @"Player One";
     playerOneLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:24.0];
+    playerOneLabel.textColor = [UIColor whiteColor];
     [playerOneLabel sizeToFit];
     CGRect oneFrame = playerOneLabel.frame;
     oneFrame.origin.x = 65;
@@ -238,6 +239,7 @@ CAShapeLayer *shapeLayer;
     UILabel *playerOneRank = [[UILabel alloc] init];
     playerOneRank.text = @"1254";
     playerOneRank.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:24.0];
+    playerOneRank.textColor = [UIColor whiteColor];
     [playerOneRank sizeToFit];
     CGRect oneRankFrame = playerOneRank.frame;
     oneRankFrame.origin.x = playerOneView.frame.size.width - oneRankFrame.size.width - 10;
@@ -262,6 +264,7 @@ CAShapeLayer *shapeLayer;
     UILabel *playerTwoLabel = [[UILabel alloc] init];
     playerTwoLabel.text = @"Player Two";
     playerTwoLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:24.0];
+    playerTwoLabel.textColor = [UIColor whiteColor];
     [playerTwoLabel sizeToFit];
     CGRect twoFrame = playerTwoLabel.frame;
     twoFrame.origin.x = 65;
@@ -273,6 +276,7 @@ CAShapeLayer *shapeLayer;
     UILabel *playerTwoRank = [[UILabel alloc] init];
     playerTwoRank.text = @"1040";
     playerTwoRank.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:24.0];
+    playerTwoRank.textColor = [UIColor whiteColor];
     [playerOneRank sizeToFit];
     CGRect twoRankFrame = playerTwoRank.frame;
     twoRankFrame.origin.x = playerOneView.frame.size.width - twoRankFrame.size.width - 10;
@@ -426,7 +430,7 @@ CAShapeLayer *shapeLayer;
     shapeLayer = [CAShapeLayer layer];
     shapeLayer.path = [path CGPath];
     shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
-    shapeLayer.lineWidth = 1.0;
+    shapeLayer.lineWidth = 2.0;
     [self.gameBoard.layer addSublayer:shapeLayer];
 }
 
