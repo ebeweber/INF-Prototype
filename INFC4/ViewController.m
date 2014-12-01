@@ -164,25 +164,26 @@ CAShapeLayer *shapeLayer;
                 newCircle.backgroundColor = self.red;
             }
             
+            // Add circle to the view
+            [self.gameBoard addSubview:newCircle];
+            
             [UIView animateWithDuration:0.5
-                                  delay:0.1
-                                options: UIViewAnimationCurveEaseOut
+                                  delay:0
+                                options: UIViewAnimationCurveEaseIn
                              animations:^
-             {
-                 CGRect frame = newCircle.frame;
-                 frame.origin.y = self.stepSize * row + 1;
-                 frame.origin.x = self.stepSize * col + 1;
-                 newCircle.frame = frame;
-             }
+                                {
+                                    CGRect frame = newCircle.frame;
+                                    frame.origin.y = self.stepSize * row + 1;
+                                    frame.origin.x = self.stepSize * col + 1;
+                                    newCircle.frame = frame;
+                                }
                              completion:^(BOOL finished)
-             {
-                 NSLog(@"Completed");
-                 
-             }];
+                                {
+                                    
+                                }];
             
             board[row][col] = playerTurn;
             boardViews[row][col] = newCircle;
-            [self.gameBoard addSubview:newCircle];
             
             [self checkAllForFourInARow:row :col];
             if (!gameOver) {
