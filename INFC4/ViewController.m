@@ -29,7 +29,18 @@ UIView *newGameView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIImage *background = [UIImage imageNamed:@"help.png"];
+    UIImage *backgroundSelected = [UIImage imageNamed:@"help.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(showGameInfo) forControlEvents:UIControlEventTouchUpInside]; //adding action
+    [button setBackgroundImage:background forState:UIControlStateNormal];
+    [button setBackgroundImage:backgroundSelected forState:UIControlStateSelected];
+    [button sizeToFit];
 
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = anotherButton;
+    
     self.title = @"Connect Four Pop";
     self.yellow = [UIColor colorWithRed:241/255.0 green:196/255.0 blue:15/255.0 alpha:1.0];
     self.red = [UIColor colorWithRed:231/255.0 green:76/255.0 blue:60/255.0 alpha:1.0];
@@ -96,6 +107,16 @@ UIView *newGameView;
     playerTurn = 1;
     newGameView.hidden = YES;
     [shapeLayer removeFromSuperlayer];
+}
+
+- (void)showGameInfo
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connect Four Pop Rules"
+                                                    message:@"Instead of dropping a piece during your turn, you may pop one of your pieces from the bottom row by tapping it. This will remove your piece and shift the others down."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Got it!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void) changeTurns

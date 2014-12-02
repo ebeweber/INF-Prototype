@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		930816CF1A2D066D00E90627 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930816CE1A2D066D00E90627 /* AVFoundation.framework */; };
 		9322E9D91A2D3E8500F1F577 /* droppiece.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9322E9D81A2D3E8500F1F577 /* droppiece.caf */; };
+		9322E9DB1A2D476B00F1F577 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 9322E9DA1A2D476B00F1F577 /* help.png */; };
 		934DDE621A2936350089A389 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 934DDE611A2936350089A389 /* main.m */; };
 		934DDE651A2936350089A389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 934DDE641A2936350089A389 /* AppDelegate.m */; };
 		934DDE681A2936350089A389 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 934DDE671A2936350089A389 /* ViewController.m */; };
@@ -30,6 +31,7 @@
 		930816CC1A2D044100E90627 /* droppiece.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = droppiece.wav; path = INFC4/droppiece.wav; sourceTree = "<group>"; };
 		930816CE1A2D066D00E90627 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9322E9D81A2D3E8500F1F577 /* droppiece.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = droppiece.caf; path = INFC4/droppiece.caf; sourceTree = "<group>"; };
+		9322E9DA1A2D476B00F1F577 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		934DDE5C1A2936350089A389 /* INFC4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INFC4.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		934DDE601A2936350089A389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		934DDE611A2936350089A389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				934DDE641A2936350089A389 /* AppDelegate.m */,
 				934DDE661A2936350089A389 /* ViewController.h */,
 				934DDE671A2936350089A389 /* ViewController.m */,
+				9322E9DA1A2D476B00F1F577 /* help.png */,
 				934DDE6C1A2936350089A389 /* Images.xcassets */,
 				934DDE6E1A2936350089A389 /* LaunchScreen.xib */,
 				934DDE5F1A2936350089A389 /* Supporting Files */,
@@ -207,6 +210,7 @@
 			files = (
 				9322E9D91A2D3E8500F1F577 /* droppiece.caf in Resources */,
 				934DDE6D1A2936350089A389 /* Images.xcassets in Resources */,
+				9322E9DB1A2D476B00F1F577 /* help.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
