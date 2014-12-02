@@ -9,9 +9,8 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-{
-    AVAudioPlayer *_audioPlayer;
-}
+
+@property (nonatomic, strong) AVAudioPlayer *theAudio;
 
 @end
 
@@ -24,6 +23,7 @@ bool gameOver = YES;
 int playerTurn = 1;  // 1 is yellow, 2 is red
 UIButton *newGameButton;
 CAShapeLayer *shapeLayer;
+UIView *newGameView;
 
 
 
@@ -44,19 +44,26 @@ CAShapeLayer *shapeLayer;
     // Add the tap gesture recognizer to the view
     [self.gameBoard addGestureRecognizer:tapRecognizer];
     
+    
+    newGameView = [[UIView alloc] initWithFrame:self.view.frame];
+    newGameView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.2];
+    
     newGameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [newGameButton setTitle:@"Start New Game" forState:UIControlStateNormal];
     
-    newGameButton.frame = CGRectMake(80.0, 210.0, 160.0, 60.0);
-    newGameButton.layer.cornerRadius = 15;
+    newGameButton.frame = CGRectMake(self.view.center.x - 100, 210.0, 200.0, 70.0);
+    newGameButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:20.0];
+    newGameButton.titleLabel.textColor = [UIColor whiteColor];
+    newGameButton.layer.cornerRadius = 10;
     [newGameButton addTarget:self
                action:@selector(startGame:)
      forControlEvents:UIControlEventTouchUpInside];
     newGameButton.backgroundColor = [UIColor colorWithRed:236/255.0
                                                     green:240/255.0
                                                      blue:241/255.0
-                                                    alpha:.6];
-    [self.view addSubview:newGameButton];
+                                                    alpha:.9];
+    [newGameView addSubview:newGameButton];
+    [self.view addSubview:newGameView];
     
     UILabel *tapToPop = [[UILabel alloc] init];
     tapToPop.text = @"Tap Bottom Piece to Pop";
@@ -68,6 +75,12 @@ CAShapeLayer *shapeLayer;
     tapToPop.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:.5];
     tapToPop.frame = frame;
     [self.view addSubview:tapToPop];
+    
+    NSString *soundPath =[[NSBundle mainBundle] pathForResource:@"droppiece" ofType:@"wav"];
+    NSURL *soundURL = [NSURL fileURLWithPath:soundPath];
+    
+    NSError *error = nil;
+    self.theAudio = [[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:&error];
     
 }
 
@@ -81,7 +94,7 @@ CAShapeLayer *shapeLayer;
     self.title = @"Player One's Turn";
     gameOver = NO;
     playerTurn = 1;
-    newGameButton.hidden = YES;
+    newGameView.hidden = YES;
     [shapeLayer removeFromSuperlayer];
 }
 
@@ -113,15 +126,7 @@ CAShapeLayer *shapeLayer;
 
 - (void) playDropSounds
 {
-    NSLog(@"playing drop sounds");
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"droppiece" ofType:@"wav"];
-    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: path];
-    
-    AVAudioPlayer *theAudio=[[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:NULL];
-    theAudio.volume = 1.0;
-    theAudio.delegate = self;
-    theAudio.numberOfLoops = 1;
-    [theAudio play];
+    [self.theAudio play];
 }
 
 - (void) handleTapWhereRow:(int)row Col:(int)col {
@@ -338,7 +343,7 @@ CAShapeLayer *shapeLayer;
 
 - (void) endGame {
     gameOver = YES;
-    newGameButton.hidden = NO;
+    newGameView.hidden = NO;
 }
 
 // Methods for checking for 4 in a row
@@ -372,7 +377,6 @@ CAShapeLayer *shapeLayer;
 }
 - (BOOL)checkDifferentAnglesForFour:(int)r :(int)c :(int)player
 {
-    NSLog(@"looking for");
     // First check for the current player
     bool four = ([self fourInARowHorizontallyFrom:r :c :player] ||
                      [self fourInARowVerticallyFrom:r :c :player] ||
